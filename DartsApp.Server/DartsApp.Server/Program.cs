@@ -1,3 +1,7 @@
+using DartsApp.Server.Facades;
+using DartsApp.Server.Models.DbModel;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// add EntityFrameworkCore
+builder.Services.AddDbContext<DartsDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// add own Services
+builder.Services.AddScoped<IGameServiceFacade, GameServiceFacade>();
 
 var app = builder.Build();
 
