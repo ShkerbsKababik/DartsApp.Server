@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DartsApp.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class GameServiceController : ControllerBase
     {
         private readonly ILogger<GameServiceController> _logger;
@@ -20,22 +20,16 @@ namespace DartsApp.Server.Controllers
             _gameServiceFacade = gameServiceFacade;
         }
 
-        [HttpGet("ApplyScore")]
+        [HttpPost]
         public void ApplyScore(ApplyScoreInfo scoreInfo)
         {
             _gameServiceFacade.ApplyScore(scoreInfo);
         }
 
-        [HttpPost("CreateGame")]
+        [HttpPost]
         public Guid CreateGame(GameCreationInfo creationInfo)
         {
             return _gameServiceFacade.CreateGame(creationInfo);
-        }
-
-        [HttpGet("ApplyScore1")]
-        public void ApplyScore1(ApplyScoreInfo scoreInfo)
-        {
-            _gameServiceFacade.ApplyScore(scoreInfo);
         }
     }
 }
