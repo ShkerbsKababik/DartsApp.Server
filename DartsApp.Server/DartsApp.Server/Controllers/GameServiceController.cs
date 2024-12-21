@@ -7,13 +7,13 @@ namespace DartsApp.Server.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class GameServiceController : ControllerBase
+    public class GameServiceController : ControllerBase, IGameServiceFacade
     {
         private readonly ILogger<GameServiceController> _logger;
         private readonly IGameServiceFacade _gameServiceFacade;
 
         public GameServiceController(
-            ILogger<GameServiceController> logger, 
+            ILogger<GameServiceController> logger,
             IGameServiceFacade gameServiceFacade)
         {
             _logger = logger;
@@ -30,6 +30,12 @@ namespace DartsApp.Server.Controllers
         public Guid CreateGame(GameCreationInfo creationInfo)
         {
             return _gameServiceFacade.CreateGame(creationInfo);
+        }
+
+        [HttpGet("{gameId}")]
+        public Game GetGameInfo(Guid gameId)
+        {
+            return _gameServiceFacade.GetGameInfo(gameId);
         }
     }
 }

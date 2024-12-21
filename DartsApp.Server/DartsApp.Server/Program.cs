@@ -1,6 +1,7 @@
 using DartsApp.Server.Facades;
 using DartsApp.Server.Models.DbModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +26,7 @@ builder.Services.AddCors(options =>
 
 // add EntityFrameworkCore
 builder.Services.AddDbContext<DartsDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+        options.UseNpgsql(builder.Configuration.GetConnectionString("DartsDbConnectionString")));
 
 // add own Services
 builder.Services.AddScoped<IGameServiceFacade, GameServiceFacade>();

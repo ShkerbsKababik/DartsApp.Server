@@ -71,7 +71,7 @@ namespace DartsApp.Server.Facades
                  Owner = creationInfo.OwnerId,
                  CurrentPlayer = creationInfo.Players.OrderBy(x => random.Next()).First(),
                  Status = GameStatus.InProcess,
-                 CreationTime = DateTime.Now,
+                 CreationTime = DateTime.UtcNow,
 
                  Players = creationInfo.Players.OrderBy(x => random.Next()).ToArray(),
                  Scores = Scores.ToArray(),
@@ -84,7 +84,7 @@ namespace DartsApp.Server.Facades
 
         public Game GetGameInfo(Guid GameId)
         {
-            throw new NotImplementedException();
+            return _dartsDbContext.Games.Where(x => x.Id == GameId).FirstOrDefault();
         }
     }
 }
