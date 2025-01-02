@@ -1,5 +1,5 @@
 using DartsApp.Server.Facades;
-using DartsApp.Server.Models.DbModel;
+using DartsApp.Server.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
