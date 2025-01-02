@@ -1,7 +1,7 @@
 using DartsApp.Server.Facades;
-using DartsApp.Server.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+
+using DartsDbScheme.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 
