@@ -12,21 +12,23 @@
         }
 
         [HttpPost]
-        public void AddUser(UserCreationInfo userCreationInfo)
-        {
-            _userServiceFacade.AddUser(userCreationInfo);
-        }
+        public void CreateUser(UserCreationInfo userCreationInfo)
+            => _userServiceFacade.CreateUser(userCreationInfo);
+
+        [HttpPatch]
+        public void UpdateUser(UserUpdateInfo userUpdateInfo)
+            => _userServiceFacade.UpdateUser(userUpdateInfo);
+
+        [HttpDelete]
+        public void DeleteUser(Guid userId)
+            => _userServiceFacade.DeleteUser(userId);
 
         [HttpGet]
         public User GetUser(Guid userId)
-        {
-            return _userServiceFacade.GetUser(userId);
-        }
+            => _userServiceFacade.GetUser(userId);
 
         [HttpGet]
         public List<User> GetUsers()
-        {
-            return _userServiceFacade.GetUsers();
-        }
+            => _userServiceFacade.GetUsers();
     }
 }

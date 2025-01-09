@@ -1,4 +1,5 @@
-﻿namespace DartsApp.Server.Facades.UserService
+﻿
+namespace DartsApp.Server.Facades.UserService
 {
     public class UserServiceFacade : IUserServiceFacade
     {
@@ -9,7 +10,9 @@
             _dartsDbContext = dartsDbContext;
         }
 
-        public void AddUser(UserCreationInfo userCreationInfo)
+        public void CreateUser(UserCreationInfo userCreationInfo)
+            => CreateUserAsync(userCreationInfo);
+        public async void CreateUserAsync(UserCreationInfo userCreationInfo)
         {
             if (_dartsDbContext.Users.Where(x => x.Name == userCreationInfo.Name).Any())
             {
@@ -24,13 +27,44 @@
                 Password = userCreationInfo.Password,
             };
 
-            _dartsDbContext.Users.Add(user);
-            _dartsDbContext.SaveChanges();
+            await _dartsDbContext.Users.AddAsync(user);
+            await _dartsDbContext.SaveChangesAsync();
+        }
+
+        public void UpdateUser(UserUpdateInfo userUpdateInfo)
+            => UpdateUserAsync(userUpdateInfo);
+        public async void UpdateUserAsync(UserUpdateInfo userUpdateInfo)
+        {
+            var user = _dartsDbContext.Users.Where(x => x.Id == userUpdateInfo.Id).FirstOrDefault();
+            if (user != null)
+            {
+                user.Name = userUpdateInfo?.Name;
+                user.Password = userUpdateInfo?.Password;
+
+                await _dartsDbContext.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception($"user {userUpdateInfo.Id} does not exist");
+            }
+        }
+
+        public void DeleteUser(Guid userId)
+        {
+            var user = _dartsDbContext.Users.Where(x => x.Id == userId).FirstOrDefault();
+            if (user != null)
+            {
+                _dartsDbContext.Remove(userId);
+            }
+            else
+            {
+                throw new Exception($"user {userId} does not exist");
+            }
         }
 
         public User GetUser(Guid userId)
         {
-            return _dartsDbContext.Users.Where(x => x.Id == userId).FirstOrDefault() 
+            return _dartsDbContext.Users.Where(x => x.Id == userId).FirstOrDefault()
                 ?? throw new Exception($"user {userId} does not exist");
         }
 
