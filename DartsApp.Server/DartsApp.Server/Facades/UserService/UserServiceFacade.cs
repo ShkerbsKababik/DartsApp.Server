@@ -27,8 +27,8 @@ namespace DartsApp.Server.Facades.UserService
                 Password = userCreationInfo.Password,
             };
 
-            await _dartsDbContext.Users.AddAsync(user);
-            await _dartsDbContext.SaveChangesAsync();
+            _dartsDbContext.Users.Add(user);
+            _dartsDbContext.SaveChanges();
         }
 
         public void UpdateUser(UserUpdateInfo userUpdateInfo)
@@ -41,7 +41,7 @@ namespace DartsApp.Server.Facades.UserService
                 user.Name = userUpdateInfo?.Name;
                 user.Password = userUpdateInfo?.Password;
 
-                await _dartsDbContext.SaveChangesAsync();
+                _dartsDbContext.SaveChanges();
             }
             else
             {
@@ -54,7 +54,8 @@ namespace DartsApp.Server.Facades.UserService
             var user = _dartsDbContext.Users.Where(x => x.Id == userId).FirstOrDefault();
             if (user != null)
             {
-                _dartsDbContext.Remove(userId);
+                _dartsDbContext.Users.Remove(user);
+                _dartsDbContext.SaveChanges();
             }
             else
             {
