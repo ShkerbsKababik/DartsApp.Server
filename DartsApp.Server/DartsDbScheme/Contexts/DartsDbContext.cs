@@ -4,7 +4,7 @@ namespace DartsDbScheme.Contexts
 {
     public class DartsDbContext : DbContext
     {
-        public DbSet<Player> Players { get; set; } = null!;
+        public DbSet<User> Users { get; set; } = null!;
         public DbSet<Game> Games { get; set; } = null!;
         public DbSet<Score> Scores { get; set; } = null!;
 
@@ -12,9 +12,21 @@ namespace DartsDbScheme.Contexts
         {
             Database.EnsureCreated();
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Game>()
+                .HasOne(g => g.LastUser) 
+                .WithMany()
+                .HasForeignKey("LastUserId");
+
+            modelBuilder.Entity<Game>()
+                .HasOne(g => g.Owner)
+                .WithMany()
+                .HasForeignKey("OwnerId");
+        }
     }
 
-    public class Player
+    public class User
     { 
         public Guid Id { get; set; }
 
@@ -37,12 +49,12 @@ namespace DartsDbScheme.Contexts
         public DateTime? EndTime { get; set; }
 
         public Guid OwnerId { get; set; }
-        public Player? Owner { get; set; }
+        public User? Owner { get; set; }
 
-        public Guid LastPlayerId { get; set; }
-        public Player? LastPlayer { get; set; }
+        public Guid LastUserId { get; set; }
+        public User? LastUser { get; set; }
 
-        public List<Player> Players { get; set; } = new();
+        public List<User> Users { get; set; } = new();
         public List<Score> Scores { get; set; } = new();
     }
 
@@ -53,8 +65,8 @@ namespace DartsDbScheme.Contexts
         public Guid GameId { get; set; }
         public Game? Game { get; set; }
 
-        public Guid PlayerId { get; set; }
-        public Player? Player { get; set; }
+        public Guid UserId { get; set; }
+        public User? User { get; set; }
     }
 
     public enum GameStatus

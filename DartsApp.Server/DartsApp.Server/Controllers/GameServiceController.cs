@@ -1,6 +1,4 @@
-﻿using DartsApp.Server.Facades;
-using Microsoft.AspNetCore.Mvc;
-
+﻿
 namespace DartsApp.Server.Controllers
 {
     [ApiController]
@@ -9,10 +7,33 @@ namespace DartsApp.Server.Controllers
     {
         private readonly IGameServiceFacade _gameServiceFacade;
 
-        public GameServiceController(
-            IGameServiceFacade gameServiceFacade)
+        public GameServiceController(IGameServiceFacade gameServiceFacade)
         {
             _gameServiceFacade = gameServiceFacade;
+        }
+
+        [HttpPost]
+        public Guid CreateGame(GameCreationInfo gameCreationInfo)
+        {
+             return _gameServiceFacade.CreateGame(gameCreationInfo);
+        }
+
+        [HttpGet]
+        public void DeleteGame(Guid gameId)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpGet]
+        public GameInfo FetchGame(Guid gameId)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPost]
+        public void UpdateGame(GameUpdateInfo gameUpdateInfo)
+        {
+            throw new NotImplementedException();
         }
 
         //[HttpPost]

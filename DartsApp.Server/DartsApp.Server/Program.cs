@@ -1,8 +1,3 @@
-using DartsApp.Server.Facades;
-using Microsoft.EntityFrameworkCore;
-
-using DartsDbScheme.Contexts;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -30,6 +25,7 @@ builder.Services.AddDbContext<DartsDbContext>(options =>
 
 // add own Services
 builder.Services.AddScoped<IGameServiceFacade, GameServiceFacade>();
+builder.Services.AddScoped<IUserServiceFacade, UserServiceFacade>();
 
 var app = builder.Build();
 
@@ -40,10 +36,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Add error handling middleware
+// app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 // Enable CORS
