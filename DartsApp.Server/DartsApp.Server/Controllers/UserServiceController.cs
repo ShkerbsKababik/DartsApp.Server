@@ -28,6 +28,10 @@
             => _userServiceFacade.GetUser(userId);
 
         [HttpGet]
+        public User GetUserByName(string userName)
+            => _userServiceFacade.GetUserByName(userName);
+
+        [HttpGet]
         public List<User> GetUsers()
             => _userServiceFacade.GetUsers();
     }

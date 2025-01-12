@@ -7,6 +7,7 @@
         public void DeleteUser(Guid userId);
 
         public User GetUser(Guid userId);
+        public User GetUserByName(string userName);
         public List<User> GetUsers();
     }
     public class UserUpdateInfo

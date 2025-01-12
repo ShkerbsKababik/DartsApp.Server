@@ -1,4 +1,6 @@
 ﻿
+using DartsDbScheme.Contexts;
+
 namespace DartsApp.Server.Facades.UserService
 {
     public class UserServiceFacade : IUserServiceFacade
@@ -69,6 +71,12 @@ namespace DartsApp.Server.Facades.UserService
         {
             return _dartsDbContext.Users.Where(x => x.Id == userId).FirstOrDefault()
                 ?? throw new Exception($"user {userId} does not exist");
+        }
+
+        public User GetUserByName(string userName)
+        {
+            return _dartsDbContext.Users.Where(x => x.Name == userName).FirstOrDefault()
+                ?? throw new Exception($"user {userName} does not exist");
         }
 
         public List<User> GetUsers()

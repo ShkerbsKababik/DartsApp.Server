@@ -44,3 +44,5 @@ app.MapControllers();
 app.UseCors("AllowAllOrigins");
 
 app.Run();
+
+public partial class Program { }
