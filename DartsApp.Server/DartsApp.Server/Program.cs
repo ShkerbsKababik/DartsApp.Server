@@ -20,8 +20,8 @@ builder.Services.AddCors(options =>
 });
 
 // add EntityFrameworkCore
-builder.Services.AddDbContext<DartsDbContext>(options =>
-        options.UseNpgsql(builder.Configuration.GetConnectionString("DartsDbConnectionString")));
+//builder.Services.AddDbContext<DartsDbContext>(options =>
+//        options.UseNpgsql(builder.Configuration.GetConnectionString("DartsDbConnectionString")));
 
 // add own Services
 builder.Services.AddScoped<IGameServiceFacade, GameServiceFacade>();

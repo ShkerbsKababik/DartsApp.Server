@@ -5,11 +5,11 @@ using DartsDbScheme.Contexts;
 
 namespace DartsApp.Server.IntegrationTests
 {
-    public class UserServiceIntegrationTest : IClassFixture<WebApplicationFactory<Program>>
+    public class UserServiceIntegrationTest : IClassFixture<CustomWebApplicationFactory<Program>>
     {
         private readonly HttpClient _client;
 
-        public UserServiceIntegrationTest(WebApplicationFactory<Program> factory)
+        public UserServiceIntegrationTest(CustomWebApplicationFactory<Program> factory)
         {
             _client = factory.CreateClient();
         }
