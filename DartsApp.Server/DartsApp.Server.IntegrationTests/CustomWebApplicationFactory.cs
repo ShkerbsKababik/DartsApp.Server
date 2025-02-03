@@ -8,17 +8,19 @@ using DartsApp.Server.Facades.UserService;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Hosting;
 using System.Data.Common;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        base.ConfigureWebHost(builder);
         builder.ConfigureServices(services =>
         {
-            var dbContextDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<DartsDbContext>));
-            if (dbContextDescriptor != null)
+            var optionsConfig = services.Where(r => r.ServiceType.IsGenericType && r.ServiceType.GetGenericTypeDefinition() == typeof(IDbContextOptionsConfiguration<>)).ToArray();
+
+            foreach (var option in optionsConfig)
             {
-                services.Remove(dbContextDescriptor);
+                services.Remove(option);
             }
 
             services.AddDbContext<DartsDbContext>(options =>
