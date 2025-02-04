@@ -22,15 +22,22 @@ namespace DartsApp.Server.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "admin, user")]
+        [Authorize]
         public void Logout()
         {
             _authenticationServiceFacade.Logout();
         }
 
         [HttpGet]
-        [Authorize(Roles = "admin, user")]
-        public string HelloWorld()
+        [AllowAnonymous]
+        public string CheckAnonymous()
+        {
+            return $"Hello World";
+        }
+
+        [HttpGet]
+        [Authorize]
+        public string CheckAuthorize()
         {
             return $"Hello World";
         }
