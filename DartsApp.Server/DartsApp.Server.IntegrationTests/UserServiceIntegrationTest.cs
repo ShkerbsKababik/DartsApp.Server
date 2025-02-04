@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-using DartsApp.Server.Facades.UserService;
 using System.Net.Http.Json;
+
+using DartsApp.Server.Facades.UserService;
 using DartsDbScheme.Contexts;
 
 namespace DartsApp.Server.IntegrationTests

@@ -1,5 +1,4 @@
-﻿
-namespace DartsApp.Server.Controllers
+﻿namespace DartsApp.Server.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
