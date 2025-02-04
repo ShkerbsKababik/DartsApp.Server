@@ -1,6 +1,8 @@
-using DartsApp.Server.Facades.AuthenticationService;
-using DartsApp.Server.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+
+using DartsApp.Server.Services;
+using DartsApp.Server.Middlewares;
+using DartsApp.Server.Facades.AuthenticationService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,6 +62,9 @@ app.UseAuthorization();
 
 // Enable CORS
 app.UseCors("AllowAllOrigins");
+
+// Use the request logging middleware
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.Run();
 
