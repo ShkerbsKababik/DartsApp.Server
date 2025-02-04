@@ -1,5 +1,5 @@
 using System.Net.Http.Json;
-
+using DartsApp.Server.Facades.AuthenticationService;
 using DartsApp.Server.Facades.UserService;
 using DartsDbScheme.Contexts;
 
@@ -12,6 +12,28 @@ namespace DartsApp.Server.IntegrationTests
         public UserServiceIntegrationTest(CustomWebApplicationFactory<Program> factory)
         {
             _client = factory.CreateClient();
+        }
+
+        [Fact]
+        public async Task Authentication()
+        {
+            // Arrange
+            // Test data
+            string login = "admin";
+            string password = "admin";
+
+            // Act
+            // Try without authentication
+            var withoutAuthenticationResponce = await _client.GetAsync($"/AuthenticationService/Logout");
+
+            // Try with authentication
+            var authenticationInfo = new AuthenticationInfo()
+            {
+                Login = login,
+                Password = password
+            };
+            var loginResponce = await _client.PostAsJsonAsync("/AuthenticationService/Login", authenticationInfo);
+            var withAuthenticationResponce = await _client.GetAsync($"/AuthenticationService/Logout");
         }
 
         [Fact]

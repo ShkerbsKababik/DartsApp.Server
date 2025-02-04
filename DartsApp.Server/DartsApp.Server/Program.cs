@@ -1,3 +1,4 @@
+using DartsApp.Server.Facades.AuthenticationService;
 using DartsApp.Server.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -14,7 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "AuthenticationService/Login";
+        options.LoginPath = "/AuthenticationService/Login";
     });
 builder.Services.AddAuthorization();
 
@@ -37,6 +38,7 @@ builder.Services.AddDbContext<DartsDbContext>(options =>
 // add own Services
 builder.Services.AddScoped<IGameServiceFacade, GameServiceFacade>();
 builder.Services.AddScoped<IUserServiceFacade, UserServiceFacade>();
+builder.Services.AddScoped<IAuthenticationServiceFacade, AuthenticationServiceFacade>();
 builder.Services.AddScoped<ISecurityService, SecurityService>();
 builder.Services.AddHttpContextAccessor();
 

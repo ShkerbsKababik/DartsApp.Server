@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace DartsApp.Server.Controllers
 {
     [ApiController]
-    [AllowAnonymous]
     [Route("[controller]/[action]")]
     public class AuthenticationServiceController : ControllerBase, IAuthenticationServiceFacade
     {
@@ -16,6 +15,7 @@ namespace DartsApp.Server.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public void Login(AuthenticationInfo authenticationInfo)
         {
             _authenticationServiceFacade.Login(authenticationInfo);
@@ -26,6 +26,13 @@ namespace DartsApp.Server.Controllers
         public void Logout()
         {
             _authenticationServiceFacade.Logout();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "admin, user")]
+        public string HelloWorld()
+        {
+            return $"Hello World";
         }
     }
 }

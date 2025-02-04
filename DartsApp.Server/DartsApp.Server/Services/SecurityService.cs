@@ -29,6 +29,9 @@ namespace DartsApp.Server.Services
                     password: "asd",
                     roles: new List<Role> { new Role("user") }
                 );
+
+            people.Add(person1);
+            people.Add(person2);
         }
 
         public void Login(string login, string password)

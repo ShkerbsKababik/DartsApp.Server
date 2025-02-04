@@ -13,12 +13,12 @@ namespace DartsApp.Server.Facades.AuthenticationService
 
         public void Login(AuthenticationInfo authenticationInfo)
         {
-            
+            _securityService.Login(authenticationInfo.Login, authenticationInfo.Password);
         }
 
         public void Logout()
         {
-            
+            _securityService.Logout();
         }
     }
 }
