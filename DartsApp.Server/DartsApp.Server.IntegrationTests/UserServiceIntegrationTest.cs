@@ -1,7 +1,6 @@
-using System.Net.Http.Json;
-
 using DartsApp.Server.Facades.UserService;
 using DartsDbScheme.Contexts;
+using System.Net.Http.Json;
 
 namespace DartsApp.Server.IntegrationTests
 {
