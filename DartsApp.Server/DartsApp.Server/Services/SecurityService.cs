@@ -8,30 +8,20 @@ namespace DartsApp.Server.Services
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private List<Person> people;
+        private List<Person> people = new List<Person>();
 
         public SecurityService(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
 
-            people = new List<Person>();
-
-            var person1 = new Person
+            var person = new Person
                 (
                     login: "admin",
                     password: "admin",
                     roles: new List<Role> { new Role("admin"), new Role("user") }
                 );
 
-            var person2 = new Person
-                (
-                    login: "asd",
-                    password: "asd",
-                    roles: new List<Role> { new Role("user") }
-                );
-
-            people.Add(person1);
-            people.Add(person2);
+            people.Add(person);
         }
 
         public void Login(string login, string password)
@@ -39,8 +29,7 @@ namespace DartsApp.Server.Services
 
         public async Task LoginAsync(string login, string password)
         {
-            Person? person = people.FirstOrDefault(p => p.Login== login && p.Password == password);
-
+            var person = people.FirstOrDefault(p => p.Login == login && p.Password == password);
             if (person != null)
             {
                 var claims = new List<Claim>();

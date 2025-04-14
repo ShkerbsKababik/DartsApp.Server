@@ -32,14 +32,14 @@ namespace DartsApp.Server.Controllers
         [AllowAnonymous]
         public string CheckAnonymous()
         {
-            return $"Hello World";
+            return $"allowed anonymous";
         }
 
         [HttpGet]
         [Authorize]
         public string CheckAuthorize()
         {
-            return $"Hello World";
+            return $"allowed authorize";
         }
     }
 }
