@@ -2,23 +2,23 @@
 {
     public interface IUserServiceFacade
     {
-        public void CreateUser(UserCreationInfo userCreationInfo);
-        public void UpdateUser(UserUpdateInfo userUpdateInfo);
-        public void DeleteUser(Guid userId);
+        public List<UserInfo> GetUsers();
+        public UserInfo GetUser(Guid id);
+        public Guid AddUser(string name);
+    }
 
-        public User GetUser(Guid userId);
-        public User GetUserByName(string userName);
-        public List<User> GetUsers();
-    }
-    public class UserUpdateInfo
-    {
-        public Guid Id { get; set; }
-        public string? Name { get; set; }
-        public string? Password { get; set; }
-    }
-    public class UserCreationInfo
+    public class UserInfo()
     { 
-        public string? Name { get; set; }
-        public string? Password { get; set; }
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+
+        public static UserInfo FromDomain(User user)
+        {
+            return new UserInfo() 
+            { 
+                Id = user.Id,
+                Name = user.Name,
+            };
+        }
     }
 }

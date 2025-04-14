@@ -12,76 +12,36 @@ namespace DartsApp.Server.Facades.UserService
             _dartsDbContext = dartsDbContext;
         }
 
-        public void CreateUser(UserCreationInfo userCreationInfo)
-            => CreateUserAsync(userCreationInfo).Wait();
-        public async Task CreateUserAsync(UserCreationInfo userCreationInfo)
+        public Guid AddUser(string name)
+            => AddUserAsync(name).Result;
+        public async Task<Guid> AddUserAsync(string name)
         {
-            if (_dartsDbContext.Users.Where(x => x.Name == userCreationInfo.Name).Any())
-            {
-                throw new Exception($"user {userCreationInfo.Name} already exist");
-            }
+            var user = _dartsDbContext.Users.FirstOrDefault(u => u.Name == name);
+            if (user != null) throw new Exception("user already exists");
 
-            var user = new User()
+            user = new User() 
             {
                 Id = Guid.NewGuid(),
-                AccessKey = Guid.NewGuid(),
-                Name = userCreationInfo.Name,
-                Password = userCreationInfo.Password,
+                Name = name
             };
 
-            await _dartsDbContext.Users.AddAsync(user);
+            await _dartsDbContext.AddAsync(user);
             await _dartsDbContext.SaveChangesAsync();
+
+            return user.Id;
         }
 
-        public void UpdateUser(UserUpdateInfo userUpdateInfo)
-            => UpdateUserAsync(userUpdateInfo).Wait();
-        public async Task UpdateUserAsync(UserUpdateInfo userUpdateInfo)
+        public UserInfo GetUser(Guid id)
         {
-            var user = _dartsDbContext.Users.Where(x => x.Id == userUpdateInfo.Id).FirstOrDefault();
-            if (user != null)
-            {
-                user.Name = userUpdateInfo?.Name;
-                user.Password = userUpdateInfo?.Password;
+            var user = _dartsDbContext.Users.FirstOrDefault(u => u.Id == id);
+            if (user == null) throw new Exception("invalid data");
 
-                await _dartsDbContext.SaveChangesAsync();
-            }
-            else
-            {
-                throw new Exception($"user {userUpdateInfo.Id} does not exist");
-            }
+            return UserInfo.FromDomain(user);
         }
 
-        public void DeleteUser(Guid userId)
-            => DeleteUserAsync(userId).Wait();
-        public async Task DeleteUserAsync(Guid userId)
+        public List<UserInfo> GetUsers()
         {
-            var user = _dartsDbContext.Users.Where(x => x.Id == userId).FirstOrDefault();
-            if (user != null)
-            {
-                _dartsDbContext.Users.Remove(user);
-                await _dartsDbContext.SaveChangesAsync();
-            }
-            else
-            {
-                throw new Exception($"user {userId} does not exist");
-            }
-        }
-
-        public User GetUser(Guid userId)
-        {
-            return _dartsDbContext.Users.Where(x => x.Id == userId).FirstOrDefault()
-                ?? throw new Exception($"user {userId} does not exist");
-        }
-
-        public User GetUserByName(string userName)
-        {
-            return _dartsDbContext.Users.Where(x => x.Name == userName).FirstOrDefault()
-                ?? throw new Exception($"user {userName} does not exist");
-        }
-
-        public List<User> GetUsers()
-        {
-            return _dartsDbContext.Users.ToList();
+            return _dartsDbContext.Users.Select(u => UserInfo.FromDomain(u)).ToList();
         }
     }
 }

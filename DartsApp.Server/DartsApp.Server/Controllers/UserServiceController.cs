@@ -1,4 +1,5 @@
-﻿namespace DartsApp.Server.Controllers
+﻿
+namespace DartsApp.Server.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
@@ -11,28 +12,19 @@
             _userServiceFacade = userServiceFacade;
         }
 
-        [HttpPost]
-        public void CreateUser(UserCreationInfo userCreationInfo)
-            => _userServiceFacade.CreateUser(userCreationInfo);
+        public Guid AddUser(string name)
+        {
+            return _userServiceFacade.AddUser(name);
+        }
 
-        [HttpPatch]
-        public void UpdateUser(UserUpdateInfo userUpdateInfo)
-            => _userServiceFacade.UpdateUser(userUpdateInfo);
+        public UserInfo GetUser(Guid id)
+        {
+            return _userServiceFacade.GetUser(id);
+        }
 
-        [HttpDelete]
-        public void DeleteUser(Guid userId)
-            => _userServiceFacade.DeleteUser(userId);
-
-        [HttpGet]
-        public User GetUser(Guid userId)
-            => _userServiceFacade.GetUser(userId);
-
-        [HttpGet]
-        public User GetUserByName(string userName)
-            => _userServiceFacade.GetUserByName(userName);
-
-        [HttpGet]
-        public List<User> GetUsers()
-            => _userServiceFacade.GetUsers();
+        public List<UserInfo> GetUsers()
+        {
+            return _userServiceFacade.GetUsers();
+        }
     }
 }

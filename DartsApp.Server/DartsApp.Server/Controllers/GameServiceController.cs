@@ -1,4 +1,5 @@
-﻿namespace DartsApp.Server.Controllers
+﻿
+namespace DartsApp.Server.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
@@ -11,40 +12,19 @@
             _gameServiceFacade = gameServiceFacade;
         }
 
-        [HttpPost]
         public Guid CreateGame(GameCreationInfo gameCreationInfo)
         {
-             return _gameServiceFacade.CreateGame(gameCreationInfo);
+            return _gameServiceFacade.CreateGame(gameCreationInfo);
         }
 
-        [HttpGet]
-        public void DeleteGame(Guid gameId)
+        public GameInfo GetGameInfo(Guid gameId)
         {
-            throw new NotImplementedException();
+            return _gameServiceFacade.GetGameInfo(gameId);
         }
 
-        [HttpGet]
-        public GameInfo FetchGame(Guid gameId)
+        public void UpdateScore(GameScoreInfo gameScoreInfo)
         {
-            throw new NotImplementedException();
+            _gameServiceFacade.UpdateScore(gameScoreInfo);
         }
-
-        [HttpPost]
-        public void UpdateGame(GameUpdateInfo gameUpdateInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        //[HttpPost]
-        //public Game ApplyScore(ApplyScoreInfo scoreInfo)
-        //{
-        //    return _gameServiceFacade.ApplyScore(scoreInfo);
-        //}
-
-        //[HttpGet("{gameId}")]
-        //public Game GetGameInfo(Guid gameId)
-        //{
-        //    return _gameServiceFacade.GetGameInfo(gameId);
-        //}
     }
 }
