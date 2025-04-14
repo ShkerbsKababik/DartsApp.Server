@@ -35,7 +35,8 @@
     }
 
     public class GameScoreInfo
-    { 
-           
+    {
+        public Guid ScoreId { get; set; }
+        public int Value { get; set; }
     }
 }
