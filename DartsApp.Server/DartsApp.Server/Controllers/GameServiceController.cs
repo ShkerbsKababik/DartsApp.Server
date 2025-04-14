@@ -12,16 +12,19 @@ namespace DartsApp.Server.Controllers
             _gameServiceFacade = gameServiceFacade;
         }
 
+        [HttpPost]
         public Guid CreateGame(GameCreationInfo gameCreationInfo)
         {
             return _gameServiceFacade.CreateGame(gameCreationInfo);
         }
 
+        [HttpGet]
         public GameInfo GetGameInfo(Guid gameId)
         {
             return _gameServiceFacade.GetGameInfo(gameId);
         }
 
+        [HttpPost]
         public void UpdateScore(GameScoreInfo gameScoreInfo)
         {
             _gameServiceFacade.UpdateScore(gameScoreInfo);

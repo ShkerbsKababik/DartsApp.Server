@@ -12,16 +12,19 @@ namespace DartsApp.Server.Controllers
             _userServiceFacade = userServiceFacade;
         }
 
+        [HttpPost]
         public Guid AddUser(string name)
         {
             return _userServiceFacade.AddUser(name);
         }
 
+        [HttpGet]
         public UserInfo GetUser(Guid id)
         {
             return _userServiceFacade.GetUser(id);
         }
 
+        [HttpGet]
         public List<UserInfo> GetUsers()
         {
             return _userServiceFacade.GetUsers();
