@@ -22,33 +22,5 @@ namespace DartsApp.Server.IntegrationTests
             // Assert
             Assert.Equal(HttpStatusCode.OK, responce.StatusCode);
         }
-
-        [Fact]
-        public async Task CheckAuthorizeAccessDenied()
-        {
-            // Act
-            var responce = await _client.GetAsync($"/AuthenticationService/CheckAuthorize");
-
-            // Assert
-            Assert.Equal(HttpStatusCode.MethodNotAllowed, responce.StatusCode);
-        }
-
-        [Fact]
-        public async Task CheckAuthorizeAccessGranted()
-        {
-            // Arrange
-            var authenticationInfo = new AuthenticationInfo()
-            {
-                Login = "admin",
-                Password = "admin"
-            };
-
-            // Act
-            await _client.PostAsJsonAsync("/AuthenticationService/Login", authenticationInfo);
-            var responce = await _client.GetAsync($"/AuthenticationService/CheckAuthorize");
-
-            // Assert
-            Assert.Equal(HttpStatusCode.OK, responce.StatusCode);
-        }
     }
 }

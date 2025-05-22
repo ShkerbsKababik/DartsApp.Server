@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DartsDbScheme", "DartsDbSch
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DartsApp.Server.IntegrationTests", "DartsApp.Server.IntegrationTests\DartsApp.Server.IntegrationTests.csproj", "{6A8482B6-A61E-419F-88E1-CBBA572122BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DartsApp.Server.Client", "DartsApp.Server.Client\DartsApp.Server.Client.csproj", "{39E6CFC8-EBF0-402F-AD7A-CC0BD10B8008}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,8 +29,15 @@ Global
 		{6A8482B6-A61E-419F-88E1-CBBA572122BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A8482B6-A61E-419F-88E1-CBBA572122BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A8482B6-A61E-419F-88E1-CBBA572122BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39E6CFC8-EBF0-402F-AD7A-CC0BD10B8008}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39E6CFC8-EBF0-402F-AD7A-CC0BD10B8008}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39E6CFC8-EBF0-402F-AD7A-CC0BD10B8008}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39E6CFC8-EBF0-402F-AD7A-CC0BD10B8008}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4FEACCFB-1F8D-4B8A-B92F-573DE1FBC32E}
 	EndGlobalSection
 EndGlobal
