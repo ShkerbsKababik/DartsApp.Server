@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DartsApp.Server.Client\DartsApp.Server.Client.csproj" />
     <ProjectReference Include="..\DartsApp.Server\DartsApp.Server.csproj" />
     <ProjectReference Include="..\DartsDbScheme\DartsDbScheme.csproj" />
   </ItemGroup>
