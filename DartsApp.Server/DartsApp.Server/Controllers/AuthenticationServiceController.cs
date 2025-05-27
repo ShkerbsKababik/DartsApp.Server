@@ -32,8 +32,6 @@ namespace DartsApp.Server.Controllers
         [AllowAnonymous]
         public string CheckAnonymous()
         {
-            var requestAccept = HttpContext.Request.Headers.Accept;
-            var responceAccept = HttpContext.Response.Headers.Accept;
             return $"allowed anonymous";
         }
 

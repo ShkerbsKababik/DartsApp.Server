@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using DartsApp.Server.Services;
 using DartsApp.Server.Middlewares;
 using DartsApp.Server.Facades.AuthenticationService;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,17 @@ builder.Services.AddCors(options =>
 // add EntityFrameworkCore
 builder.Services.AddDbContext<DartsDbContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("DartsDbConnectionString")));
+
+// OpenApi configuration
+builder.Services.AddControllers(options =>
+{
+    // ќтключаем text/plain и другие форматы
+    options.OutputFormatters.RemoveType<StringOutputFormatter>();
+
+    // явно указываем, что API использует только JSON
+    options.Filters.Add(new ProducesAttribute("application/json"));
+    options.Filters.Add(new ConsumesAttribute("application/json"));
+});
 
 // add own Services
 builder.Services.AddScoped<IGameServiceFacade, GameServiceFacade>();
