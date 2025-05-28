@@ -1,33 +1,60 @@
-using DartsApp.Server.Facades.UserService;
-using DartsDbScheme.Contexts;
-using System.Net.Http.Json;
-
 namespace DartsApp.Server.IntegrationTests
 {
     public class UserServiceIntegrationTest : IClassFixture<CustomWebApplicationFactory<Program>>
     {
-        private readonly HttpClient _client;
+        private readonly Client.Client _client;
 
         public UserServiceIntegrationTest(CustomWebApplicationFactory<Program> factory)
         {
-            _client = factory.CreateClient();
+            var client = factory.CreateClient();
+            var baseUrl = client.BaseAddress?.ToString();
+
+            _client = new Client.Client(baseUrl, client);
         }
 
         [Fact]
-        public async Task UserServiceCrudCycle()
+        public async Task AddUserTest()
         {
             // Arrange
-            string userName = "NewUser1";
-            string userPassword = "123";
+            var userName = $"new user {Guid.NewGuid()}";
 
             // Act
-            await _client.PostAsJsonAsync("/UserService/CreateUser", "");
-
-            // Get user
-            var responce = await _client.GetAsync($"/UserService/GetUserByName?userName={userName}");
+            var createdUserId = await _client.AddUserAsync(userName);
+            var createdUser = await _client.GetUserAsync(createdUserId);
 
             // Assert
-            Assert.NotNull(responce);
+            Assert.NotNull(createdUser);
+            Assert.Equal(createdUserId, createdUser.Id);
+            Assert.Equal(userName, createdUser.Name);
+        }
+
+        [Fact]
+        public async Task GetUsersTest()
+        {
+            // Arrange
+            var userCount = 10;
+            var userNamesToAdd = new List<string>();
+            for (int i = 0; i < userCount; i++) 
+            { 
+                userNamesToAdd.Add($"new user {i}");
+            }
+
+            // Act
+            foreach (var userName in userNamesToAdd)
+            {
+                await _client.AddUserAsync(userName);
+            }
+
+            var users = await _client.GetUsersAsync();
+
+            // Assert
+            var createdUserNames = users.Select(x => x.Name).ToList();
+
+            Assert.True(users.Count >= userCount);
+            foreach (var userName in userNamesToAdd)
+            {
+                Assert.Contains(userName, createdUserNames);
+            }
         }
     }
 }

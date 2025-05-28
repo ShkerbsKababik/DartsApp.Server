@@ -1,7 +1,4 @@
-﻿
-using DartsDbScheme.Contexts;
-
-namespace DartsApp.Server.Facades.UserService
+﻿namespace DartsApp.Server.Facades.UserService
 {
     public class UserServiceFacade : IUserServiceFacade
     {

@@ -1,8 +1,4 @@
-﻿using DartsApp.Server.Facades.AuthenticationService;
-using System.Net.Http.Json;
-using System.Net;
-using DartsApp.Server.Client;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+﻿using DartsApp.Server.Client;
 
 namespace DartsApp.Server.IntegrationTests
 {
