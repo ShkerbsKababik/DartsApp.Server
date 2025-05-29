@@ -1,7 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Http.HttpResults;
-
-namespace DartsApp.Server.Facades
+﻿namespace DartsApp.Server.Facades
 {
     public class GameServiceFacade : IGameServiceFacade
     {
@@ -17,14 +14,14 @@ namespace DartsApp.Server.Facades
         public async Task<Guid> CreateGameAsync(GameCreationInfo gameCreationInfo)
         {
             var owner = _dartsDbContext.Users.FirstOrDefault(u => u.Id == gameCreationInfo.OwnerId);
-            var players = _dartsDbContext.Users.Where(u => gameCreationInfo.PlayerIds.Contains(u.Id));
+            var players = _dartsDbContext.Users.Where(u => gameCreationInfo.PlayerIds.Contains(u.Id)).ToList();
             if (owner == null && players.Count() != gameCreationInfo.PlayerIds.Count) throw new Exception("invalid data");
 
             var game = new Game()
             {
                 Id = Guid.NewGuid(),
-                Owner = owner,
-                CurrentPlayer = owner,
+                OwnerId = owner.Id,
+                CurrentPlayerId = owner.Id,
                 Players = new List<User>(),
                 Scores = new List<Score>()
             };
@@ -44,15 +41,26 @@ namespace DartsApp.Server.Facades
             await _dartsDbContext.Games.AddAsync(game);
             await _dartsDbContext.SaveChangesAsync();
 
+            var asd = _dartsDbContext.Games.FirstOrDefault(g => g.Id == game.Id);
+
             return game.Id;
         }
 
         public GameInfo GetGameInfo(Guid gameId)
         {
-            var game = _dartsDbContext.Games.FirstOrDefault(g => g.Id == gameId);
-            if (game == null) throw new Exception("invalid data");
+            var gameInfo = _dartsDbContext.Games
+                .Where(g => g.Id == gameId)
+                .Select(g => new GameInfo
+                {
+                    Id = g.Id,
+                    Owner = g.Owner,
+                    CurrentPlayer = g.CurrentPlayer,
+                    Players = g.Players,
+                    Scores = g.Scores
+                })
+                .FirstOrDefault();
 
-            return GameInfo.FromDomain(game);
+            return gameInfo ?? throw new Exception("internal exception");
         }
 
         public void UpdateScore(GameScoreInfo gameScoreInfo)

@@ -1,9 +1,4 @@
 ﻿using DartsApp.Server.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DartsApp.Server.IntegrationTests
 {
@@ -31,11 +26,10 @@ namespace DartsApp.Server.IntegrationTests
 
             var createdGameId = await _client.CreateGameAsync(new GameCreationInfo() 
             { 
-                OwnerId = createdUserId, 
-                PlayerIds = { createdUserId } 
+                OwnerId = createdUserId,
+                PlayerIds = new List<Guid>() { createdUserId }
             });
-
-            var createdGameInfo = await _client.GetGameInfoAsync(createdUserId);
+            var createdGameInfo = await _client.GetGameInfoAsync(createdGameId);
 
             // Assert
             Assert.NotNull(createdGameInfo);

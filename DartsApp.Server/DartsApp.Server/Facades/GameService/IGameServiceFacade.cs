@@ -23,6 +23,14 @@
 
         public static GameInfo FromDomain(Game game)
         {
+            var gameInfo = new GameInfo();
+
+            gameInfo.Id = game.Id;
+            gameInfo.Owner = game.Owner;
+            gameInfo.CurrentPlayer = game.CurrentPlayer;
+            gameInfo.Players = game.Players;
+            gameInfo.Scores = game.Scores;
+
             return new GameInfo() 
             { 
                 Id = game.Id,
