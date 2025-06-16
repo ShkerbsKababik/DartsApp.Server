@@ -1,4 +1,7 @@
-﻿namespace DartsApp.Server.Controllers
+﻿using DartsApp.Server.Facades.GameService;
+using Microsoft.AspNetCore.Mvc;
+
+namespace DartsApp.Server.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
@@ -24,7 +27,7 @@
         }
 
         [HttpPost]
-        public void UpdateScore(GameScoreInfo gameScoreInfo)
+        public void UpdateScore(UpdateScoreInfo gameScoreInfo)
         {
             _gameServiceFacade.UpdateScore(gameScoreInfo);
         }

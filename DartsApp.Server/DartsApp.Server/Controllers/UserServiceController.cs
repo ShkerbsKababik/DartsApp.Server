@@ -1,4 +1,7 @@
-﻿namespace DartsApp.Server.Controllers
+﻿using Microsoft.AspNetCore.Mvc;
+using DartsApp.Server.Facades.UserService;
+
+namespace DartsApp.Server.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]

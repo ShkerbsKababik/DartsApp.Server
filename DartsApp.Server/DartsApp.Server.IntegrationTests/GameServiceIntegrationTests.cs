@@ -33,7 +33,7 @@ namespace DartsApp.Server.IntegrationTests
 
             // Assert
             Assert.NotNull(createdGameInfo);
-            Assert.Equal(createdGameInfo.Owner.Name, userName);
+            Assert.Equal(createdGameInfo.OwnerId, createdUser.Id);
         }
     }
 }

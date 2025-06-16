@@ -1,4 +1,6 @@
-﻿namespace DartsApp.Server.Facades.UserService
+﻿using DartsDbScheme.Contexts;
+
+namespace DartsApp.Server.Facades.UserService
 {
     public interface IUserServiceFacade
     {
@@ -10,7 +12,7 @@
     public class UserInfo()
     { 
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public static UserInfo FromDomain(User user)
         {

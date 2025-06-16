@@ -1,48 +1,61 @@
-﻿namespace DartsApp.Server.Facades
+﻿using DartsApp.Server.Facades.UserService;
+using DartsDbScheme.Contexts;
+
+namespace DartsApp.Server.Facades.GameService
 {
     public interface IGameServiceFacade
     {
         public Guid CreateGame(GameCreationInfo gameCreationInfo);
         public GameInfo GetGameInfo(Guid gameId);
-        public void UpdateScore(GameScoreInfo gameScoreInfo);
-    }
-
-    public class GameCreationInfo
-    {
-        public List<Guid> PlayerIds { get; set; }
-        public Guid OwnerId { get; set; }
+        public void UpdateScore(UpdateScoreInfo gameScoreInfo);
     }
 
     public class GameInfo
     {
         public Guid Id { get; set; }
-        public User Owner { get; set; }
-        public User CurrentPlayer { get; set; }
-        public ICollection<User> Players { get; set; }
-        public ICollection<Score> Scores { get; set; }
+        public Guid OwnerId { get; set; }
+        public Guid CurrentPlayerId { get; set; }
+        public PlayerInfo[]? Players { get; set; }
+        public ScoreInfo[]? Scores { get; set; }
+    }
 
-        public static GameInfo FromDomain(Game game)
+    public class PlayerInfo
+    {
+        public Guid Id { get; set; }
+        public string? Name { get; set; }
+
+        public static PlayerInfo FromDomain(User user)
         {
-            var gameInfo = new GameInfo();
-
-            gameInfo.Id = game.Id;
-            gameInfo.Owner = game.Owner;
-            gameInfo.CurrentPlayer = game.CurrentPlayer;
-            gameInfo.Players = game.Players;
-            gameInfo.Scores = game.Scores;
-
-            return new GameInfo() 
-            { 
-                Id = game.Id,
-                Owner = game.Owner,
-                CurrentPlayer = game.CurrentPlayer,
-                Players = game.Players,
-                Scores = game.Scores,
+            return new PlayerInfo()
+            {
+                Id = user.Id,
+                Name = user.Name
             };
         }
     }
 
-    public class GameScoreInfo
+    public class ScoreInfo
+    {
+        public Guid Owner { get; set; }
+        public int Value { get; set; }
+
+        public static ScoreInfo FromDomain(Score score)
+        {
+            return new ScoreInfo()
+            {
+                Owner = score.Owner.Id,
+                Value = score.Value
+            };
+        }
+    }
+
+    public class GameCreationInfo
+    {
+        public Guid[]? PlayerIds { get; set; }
+        public Guid OwnerId { get; set; }
+    }
+
+    public class UpdateScoreInfo
     {
         public Guid ScoreId { get; set; }
         public int Value { get; set; }

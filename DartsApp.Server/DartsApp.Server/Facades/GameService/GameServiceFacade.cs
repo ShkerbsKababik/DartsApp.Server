@@ -1,4 +1,7 @@
-﻿namespace DartsApp.Server.Facades
+﻿using Microsoft.EntityFrameworkCore;
+using DartsDbScheme.Contexts;
+
+namespace DartsApp.Server.Facades.GameService
 {
     public class GameServiceFacade : IGameServiceFacade
     {
@@ -15,13 +18,13 @@
         {
             var owner = _dartsDbContext.Users.FirstOrDefault(u => u.Id == gameCreationInfo.OwnerId);
             var players = _dartsDbContext.Users.Where(u => gameCreationInfo.PlayerIds.Contains(u.Id)).ToList();
-            if (owner == null && players.Count() != gameCreationInfo.PlayerIds.Count) throw new Exception("invalid data");
+            if (owner == null && players.Count() != gameCreationInfo.PlayerIds.Length) throw new Exception("invalid data");
 
             var game = new Game()
             {
                 Id = Guid.NewGuid(),
-                OwnerId = owner.Id,
-                CurrentPlayerId = owner.Id,
+                OwnerId = owner?.Id ?? Guid.Empty,
+                CurrentPlayerId = owner?.Id ?? Guid.Empty,
                 Players = new List<User>(),
                 Scores = new List<Score>()
             };
@@ -41,37 +44,39 @@
             await _dartsDbContext.Games.AddAsync(game);
             await _dartsDbContext.SaveChangesAsync();
 
-            var asd = _dartsDbContext.Games.FirstOrDefault(g => g.Id == game.Id);
-
             return game.Id;
         }
 
         public GameInfo GetGameInfo(Guid gameId)
         {
-            var gameInfo = _dartsDbContext.Games
-                .Where(g => g.Id == gameId)
-                .Select(g => new GameInfo
-                {
-                    Id = g.Id,
-                    Owner = g.Owner,
-                    CurrentPlayer = g.CurrentPlayer,
-                    Players = g.Players,
-                    Scores = g.Scores
-                })
-                .FirstOrDefault();
+            var game = _dartsDbContext.Games
+                .Include(g => g.Players)
+                .Include(g => g.Scores)
+                .FirstOrDefault(g => g.Id == gameId);
+
+            if (game == null) throw new Exception("invalid data");
+            var gameInfo = new GameInfo() 
+            { 
+                Id = Guid.NewGuid(),
+                OwnerId= game.OwnerId,
+                CurrentPlayerId = game.CurrentPlayerId,
+            };
+
+            gameInfo.Players = game.Players.Select(PlayerInfo.FromDomain).ToArray();
+            gameInfo.Scores = game.Scores.Select(ScoreInfo.FromDomain).ToArray();
 
             return gameInfo ?? throw new Exception("internal exception");
         }
 
-        public void UpdateScore(GameScoreInfo gameScoreInfo)
+        public void UpdateScore(UpdateScoreInfo gameScoreInfo)
             => UpdateScoreAsync(gameScoreInfo).Wait();
 
-        public async Task UpdateScoreAsync(GameScoreInfo gameScoreInfo)
+        public async Task UpdateScoreAsync(UpdateScoreInfo updateScoreInfo)
         {
-            var score = _dartsDbContext.Scores.FirstOrDefault(s => s.Id == gameScoreInfo.ScoreId);
+            var score = _dartsDbContext.Scores.FirstOrDefault(s => s.Id == updateScoreInfo.ScoreId);
             if (score == null) throw new Exception("invalid data");
 
-            score.Value = gameScoreInfo.Value;
+            score.Value = updateScoreInfo.Value;
             await _dartsDbContext.SaveChangesAsync();
         }
     }

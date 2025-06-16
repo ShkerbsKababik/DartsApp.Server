@@ -43,9 +43,9 @@ namespace DartsDbScheme.Contexts
     {
         public Guid Id { get; set; }
         public Guid OwnerId { get; set; }
-        public User? Owner { get; set; }
+        public User Owner { get; set; }
         public Guid CurrentPlayerId { get; set; }
-        public User? CurrentPlayer { get; set; }
+        public User CurrentPlayer { get; set; }
         public ICollection<User> Players { get; set; } = new List<User>();
         public ICollection<Score> Scores { get; set; } = new List<Score>();
     }
@@ -53,15 +53,15 @@ namespace DartsDbScheme.Contexts
     public class Score
     {
         public Guid Id { get; set; }
-        public Game? Game { get; set; }
-        public User? Owner { get; set; }
+        public Game Game { get; set; }
+        public User Owner { get; set; }
         public int Value { get; set; }
     }
 
     public class User
     {
         public Guid Id { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; }
         public ICollection<Game> Games { get; set; } = new List<Game>();
         public ICollection<Score> Scores { get; set; } = new List<Score>();
     }

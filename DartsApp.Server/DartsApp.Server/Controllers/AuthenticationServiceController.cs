@@ -1,5 +1,6 @@
 ﻿using DartsApp.Server.Facades.AuthenticationService;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DartsApp.Server.Controllers
 {
